@@ -1,0 +1,3 @@
+[submodule "epi_judge_java/jnr-ffi"]
+	path = epi_judge_java/jnr-ffi
+	url = https://github.com/jnr/jnr-ffi.git

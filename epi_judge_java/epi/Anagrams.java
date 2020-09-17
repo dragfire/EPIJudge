@@ -11,6 +11,7 @@ import java.util.function.BiPredicate;
 import java.io.File;
 import jnr.ffi.LibraryLoader;
 import static java.lang.System.mapLibraryName;
+import java.net.URL;
 
 public class Anagrams {
   public static interface RustLib {
@@ -18,7 +19,9 @@ public class Anagrams {
   }
 
   public static String getLibraryPath(String dylib) {
-      File f = new File(Anagrams.class.getClassLoader().getResource(mapLibraryName(dylib)).getFile());
+      String name = mapLibraryName(dylib);
+      URL resource = Anagrams.class.getClassLoader().getResource(name);
+      File f = new File(resource.getFile());
       return f.getParent();
   }
 
@@ -32,6 +35,7 @@ public class Anagrams {
       System.out.println("Result from rust double_input:  " + r);
       return null;
   }
+
   @EpiTestComparator
   public static boolean comp(List<List<String>> expected,
           List<List<String>> result) {
