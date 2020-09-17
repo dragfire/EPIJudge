@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class Anagrams {
   public static interface RustLib {
-      int double_input(int i);
+      int anagrams(String[] dictionary);
   }
 
   public static String getLibraryPath(String dylib) {
@@ -31,7 +31,7 @@ public class Anagrams {
       String dylib = "rust_ffi";
       System.setProperty("jnr.ffi.library.path", getLibraryPath(dylib));
       RustLib rlib = LibraryLoader.create(RustLib.class).load(dylib);
-      int r = rlib.double_input(20);
+      int r = rlib.anagrams(dictionary.toArray(String[]::new));
       System.out.println("Result from rust double_input:  " + r);
       return null;
   }

@@ -14,7 +14,7 @@ ifdef ComSpec # Running on Windows
 	JAVAC_CMD := javac -parameters -d "$(BUILD_DIR)" -cp "$(BUILD_DIR);."
 	RUN_CMD := java -cp "$(BUILD_DIR)" -Djava.library.path="$(SRC_DIR)/epi/test_framework/"
 else
-	JAVAC_CMD := javac -parameters -d "$(BUILD_DIR)" -cp "$(BUILD_DIR):."
+	JAVAC_CMD := javac -parameters -d "$(BUILD_DIR)" -cp "jnr-ffi/target/dependency/*:jnr-ffi/target/jnr-ffi-2.2.1-SNAPSHOT.jar:$(BUILD_DIR):."
 	RUN_CMD := java -cp "jnr-ffi/target/dependency/*:jnr-ffi/target/jnr-ffi-2.2.1-SNAPSHOT.jar:$(BUILD_DIR)"
 endif
 
