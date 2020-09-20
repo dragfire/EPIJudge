@@ -1,19 +1,24 @@
 use std::cell::RefCell;
 use std::collections::VecDeque;
-use std::fmt::Debug;
 use std::rc::Rc;
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Eq, PartialEq, Debug)]
 pub struct TreeNode<T> {
-    data: T,
-    left: Option<Rc<RefCell<TreeNode<T>>>>,
-    right: Option<Rc<RefCell<TreeNode<T>>>>,
+    pub data: T,
+    pub left: Option<Rc<RefCell<TreeNode<T>>>>,
+    pub right: Option<Rc<RefCell<TreeNode<T>>>>,
 }
 
-impl<T> TreeNode<T>
+impl<T> std::fmt::Display for TreeNode<T>
 where
-    T: Clone + Debug,
+    T: std::fmt::Display,
 {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Node: {}", self.data)
+    }
+}
+
+impl<T> TreeNode<T> {
     pub fn new(data: T) -> Self {
         TreeNode {
             data,
@@ -23,14 +28,20 @@ where
     }
 }
 
-struct Tree<T>(Option<Rc<RefCell<TreeNode<T>>>>);
+/// Wrap a TreeNode as root node.
+///
+pub struct Tree<T>(Option<Rc<RefCell<TreeNode<T>>>>);
 
 impl<T> Tree<T>
 where
-    T: Clone + Debug,
+    T: std::fmt::Display,
 {
     pub fn new() -> Self {
         Tree(None)
+    }
+
+    pub fn root(&self) -> Option<Rc<RefCell<TreeNode<T>>>> {
+        self.0.clone()
     }
 
     pub fn build_tree(&mut self, data: Vec<Option<T>>) {
@@ -75,7 +86,7 @@ where
             Some(ref node) => {
                 let cloned_node = node.clone();
                 Tree::print_inorder_helper(cloned_node.borrow().left.clone());
-                print!("{:?} ", node.borrow().data);
+                print!("{}, ", cloned_node.borrow());
                 Tree::print_inorder_helper(cloned_node.borrow().right.clone());
             }
             None => return,
