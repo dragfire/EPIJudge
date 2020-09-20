@@ -5,7 +5,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 mod color;
-mod tree;
+pub mod tree;
 use color::Color;
 
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
