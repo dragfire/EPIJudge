@@ -1,5 +1,27 @@
 # EPI Judge
+> This fork supports Rust Language. Use: https://github.com/adnanaziz/EPIJudge.git for other languages.  
 
+> It's still a Work In Progress, but it's pretty straightforward to use this to solve EPI problems.  
+Test suite for Rust is ready! You can refer other solved problems in `epi_judge_rust/src/bin` directory to get an idea on how it's being used!
+```rust
+fn search_maze(maze: Vec<Vec<Color>>, s: Coordinate, e: Coordinate) -> bool {
+    false
+}
+
+fn main() {
+    // Make sure that you put in the correct `.tsv` for the problem you are trying to solve.
+    epi_judge_rust::run_tests("search_maze.tsv", |data| -> epi_judge_rust::Result<()> {
+        let maze = serde_json::from_str::<Vec<Vec<Color>>>(&data[0]).unwrap(); // notice the type conversion during deserialization
+        let s = serde_json::from_str::<Coordinate>(&data[1]).unwrap(); // make sure types match with you function signature.\
+        let e = serde_json::from_str::<Coordinate>(&data[2]).unwrap();
+	
+        let expected = serde_json::from_str::<bool>(&data[3]).unwrap();
+        let actual = search_maze(maze, s, e);
+
+        epi_judge_rust::try_assert!(actual, expected)
+    });
+}
+```
 ## Beta 5
 
 ## Introduction
