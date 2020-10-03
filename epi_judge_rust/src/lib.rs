@@ -5,6 +5,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 mod color;
+mod thread_pool;
 pub mod tree;
 use color::Color;
 
