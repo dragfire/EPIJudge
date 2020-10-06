@@ -69,7 +69,12 @@ where
 
         for data in test_data {
             let curr_test_then = Instant::now();
-            let result = func(data);
+
+            let reason = &data[data.len() - 1];
+            // Show any useful reason for test failure.
+            let reason = if reason == "TODO" { "" } else { reason };
+
+            let result = func(data.clone());
             match result {
                 Ok(_) => {
                     println!(
@@ -83,11 +88,12 @@ where
                 }
                 Err(_) => {
                     println!(
-                        "Test {} {}/{} [{:^5}µs]",
+                        "Test {} {}/{} [{:^5}µs] {}",
                         Color::Red("FAILED").make(),
                         test_nbr,
                         n,
-                        curr_test_then.elapsed().as_micros()
+                        curr_test_then.elapsed().as_micros(),
+                        reason
                     );
                     num_failed += 1;
                 }
@@ -104,7 +110,6 @@ where
         }
     });
 
-    // TODO make default timeout configurable
     match receiver.recv_timeout(Duration::from_millis(5000)) {
         Ok(status) => match status {
             ExecStatus::Failed((failed, passed)) => {
@@ -126,8 +131,11 @@ where
                 );
             }
         },
-        Err(e) => {
-            panic!("TimeLimitExceeded: {:?}", e);
+        Err(mpsc::RecvTimeoutError::Timeout) => {
+            panic!("TimeLimitExceeded");
+        }
+        Err(mpsc::RecvTimeoutError::Disconnected) => {
+            panic!("RunTimeException");
         }
     }
 }
